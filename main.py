@@ -10,7 +10,7 @@ from ollama import Client
 client_ollama = Client(
     host="https://ollama.com",
     headers={
-        "Authorization": f"Bearer {st.secrets['100adf65508747079265abe556955019.jegpaAfLOl4P0EJpXjFWE-ny']}"
+        "Authorization": f"Bearer {st.secrets["OLLAMA_API_KEY"]}"
     }
 )
 
