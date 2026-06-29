@@ -4,6 +4,20 @@ import pypdf
 import chromadb
 import ollama
 
+
+from ollama import Client
+# Initialize the client to talk to the cloud endpoint with your secret key
+client_ollama = Client(
+    host="https://ollama.com",
+    headers={
+        "Authorization": f"Bearer {st.secrets['100adf65508747079265abe556955019.jegpaAfLOl4P0EJpXjFWE-ny']}"
+    }
+)
+
+# 2. Call chat using the new 'client' instance instead of the global 'ollama'
+
+
+
 LLM_MODEL = "vicuna:7b-v1.5-q5_1"
 EMBED_MODEL = "bge-m3"
 
@@ -66,11 +80,16 @@ def rag(question, collection, k=4):
   """Hàm RAG: tìm context và hỏi LLM."""
   res = collection.query(query_embeddings=embed([question]), n_results=k) # question đầu vào cũng được embedding như dữ liệu file PDF, so sánh với các vector trong database, dữ liệu gốc nằm trong collection
   context = "\n\n".join(res["documents"][0]) # lầy ra từ văn bản gốc các đoạn liên quan
-  resp = ollama.chat(
-      model=LLM_MODEL,
-      messages=[{"role": "user", "content": PROMPT.format(context=context, question=question)}], # dựa vào PROMT, ngữ cảnh trong văn bản gốc và câu hỏi để sinh câu trả lời
-      options={"temperature": 0},
-      )
+  resp = client_ollama.chat(
+    model=LLM_MODEL,
+    messages=[
+        {
+            "role": "user", 
+            "content": PROMPT.format(context=context, question=question)
+        }
+    ], 
+    options={"temperature": 0},
+  )
   return resp["message"]["content"]
 
 # Giao diện người dùng UI
