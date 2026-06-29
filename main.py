@@ -18,7 +18,8 @@ client_ollama = Client(
 
 
 
-LLM_MODEL = "vicuna:7b-v1.5-q5_1"
+# LLM_MODEL = "vicuna:7b-v1.5-q5_1"
+LLM_MODEL = "gpt-oss:120b"
 EMBED_MODEL = "bge-m3"
 
 PROMPT = """Bạn là trợ lý hỏi đáp. Dùng các đoạn ngữ cảnh dưới đây để trả lời câu hỏi.
